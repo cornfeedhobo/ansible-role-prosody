@@ -1,0 +1,9 @@
+---
+- name: "Converge"
+  hosts: "all"
+  tasks:
+    - name: "Include cornfeedhobo.prosody"
+      ansible.builtin.include_role:
+        name: "cornfeedhobo.prosody"
+      vars:
+        prosody_install: true

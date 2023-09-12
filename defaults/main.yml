@@ -1,0 +1,93 @@
+---
+
+prosody_install: false
+prosody_packages: "{{ __prosody_packages }}"
+prosody_package_state: "present"
+
+prosody_user: "prosody"
+prosody_group: "prosody"
+
+prosody_data_dir: "{{ __prosody_data_dir }}"
+prosody_config_dir: "{{ __prosody_config_dir }}"
+
+prosody_configure: false
+# @var prosody_config:description: >
+# Uses encode_lua() to transform the supplied yaml-formatted config
+# to a corresponding lua config file.
+# @end
+# @var prosody_config:example: >
+# external_addresses: ["1.2.3.4"]
+# c2s_interfaces: ["0.0.0.0"]
+# s2s_interfaces: ["0.0.0.0"]
+# http_interfaces: ["0.0.0.0"]
+# https_interfaces: ["0.0.0.0"]
+# http_external_url: "https://xmpp.example.org/"
+# trusted_proxies: ["127.0.0.1"]
+# admins: ["admin@example.org"]
+# network_backend: "event"
+# modules_enabled: [...]
+# contact_info:
+#   abuse: ["mailto:abuse@example.org", "xmpp:abuse@example.org"]
+#   admin: ["mailto:admin@example.org", "xmpp:admin@example.org"]
+# allow_registration: false
+# c2s_require_encryption: true
+# s2s_require_encryption: true
+# s2s_secure_auth: false
+# limits:
+#   c2s:
+#     rate: "10kb/s"
+#   s2sin:
+#     rate: "30kb/s"
+# authentication: "dovecot"
+# dovecot_auth_host: "127.0.0.1"
+# dovecot_auth_port: "864"
+# disable_sasl_mechanisms: ["LOGIN"]
+# storage: "sql"
+# sql:
+#   driver: "SQLite3"
+#   database: "prosody.sqlite"
+# default_archive_policy: "roster"
+# archive_expires_after: "never"
+# log:
+#   debug: "*console"
+# certificates: "/etc/prosody/ssl"
+# c2s_direct_tls_ports: [5223]
+# s2s_direct_tls_ports: [5270]
+# pidfile: "/run/prosody/prosody.pid"
+# @end
+prosody_config: {}
+# @var prosody_vhosts:description: >
+# Uses a custom template to transform the supplied yaml-formatted
+# virtual host descriptions
+# @end
+# @var prosody_vhosts:example: >
+# example.org: >
+#   Component "muc.example.org" "muc"
+#       name = "example.org chatrooms"
+#       modules_enabled = { "muc_mam", "vcard_muc" }
+#   Component "xup.example.org" "http_upload"
+#       http_upload_expire_after = 60 * 60 * 24 * 30
+#       http_upload_file_size_limit = 1024 * 1024 * 10
+#   Component "x65.example.org" "proxy65"
+# @end
+prosody_vhosts: {}
+
+prosody_ssl: false
+prosody_ssl_dir: "{{ prosody_config_dir }}/ssl"
+# @var prosody_ssl_pairs:description: >
+# - name: ""
+#   key: ""
+#   crt: ""
+#   ca: ""
+# @end
+# @var prosody_ssl_pairs:example: >
+# - name: "example.org"
+#   key: "{{ lookup('file', 'example.org.key') }}"
+#   crt: "{{ lookup('file', 'example.org.crt') }}"
+#   ca: "{{ lookup('file', 'ca.crt') }}"
+# @end
+prosody_ssl_pairs: []
+
+prosody_service: false
+prosody_service_state: "stopped"
+prosody_service_enabled: false

@@ -1,0 +1,19 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: "Verify"
+  hosts: "all"
+  gather_facts: false
+  tasks:
+    -
+      name: "Check if prosody was installed"
+      ansible.builtin.package:
+        name: "prosody"
+      check_mode: true
+      diff: true
+      register: "prosody_stat"
+    -
+      name: "Example assertion"
+      ansible.builtin.assert:
+        that:
+          - "not prosody_stat.changed"

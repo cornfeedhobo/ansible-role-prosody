@@ -1,0 +1,9 @@
+---
+
+-
+  name: Install Prosody packages
+  become: true
+  package:
+    name: "{{ item }}"
+    state: "{{ prosody_package_state }}"
+  with_items: "{{ prosody_packages | list }}"

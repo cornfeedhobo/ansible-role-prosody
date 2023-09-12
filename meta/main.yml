@@ -1,0 +1,15 @@
+---
+galaxy_info:
+  role_name: "prosody"
+  author: "cornfeedhobo"
+  description: "Install and configure Prosody XMPP Server."
+  license: "MIT"
+  galaxy_tags: ["prosody", "xmpp"]
+  min_ansible_version: "2.1"
+  platforms:
+    -
+      name: "EL"
+      versions:
+        - "all"
+
+dependencies: []

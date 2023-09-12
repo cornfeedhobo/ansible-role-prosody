@@ -1,0 +1,13 @@
+---
+
+-
+  name: "Validate prosody config"
+  become: true
+  command: "prosodyctl check config"
+
+-
+  name: "Restart prosody"
+  become: true
+  service:
+    name: "prosody"
+    state: "restarted"

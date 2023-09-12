@@ -1,0 +1,10 @@
+-- {{ ansible_managed }}
+--
+-- Prosody XMPP Configuration File
+
+{{ prosody_config | encode_lua(sort_keys=true) }}
+
+{% for vhost, cfg in prosody_vhosts.items() -%}
+VirtualHost "{{ vhost }}"
+{{ cfg }}
+{% endfor -%}

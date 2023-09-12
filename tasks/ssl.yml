@@ -1,0 +1,42 @@
+---
+
+-
+  name: "Ensure the SSL directory exists"
+  become: true
+  file:
+    path: "{{ prosody_ssl_dir }}"
+    state: "directory"
+    owner: "{{ prosody_user }}"
+    group: "{{ prosody_group }}"
+    mode: "0700"
+  when: "prosody_ssl_pairs | length > 0"
+
+-
+  name: "Manage the SSL keys"
+  become: true
+  no_log: true
+  copy:
+    content: "{{ item.key }}"
+    dest: "{{ prosody_ssl_dir }}/{{ item.name }}.key"
+    owner: "{{ prosody_user }}"
+    group: "{{ prosody_group }}"
+    mode: "0600"
+  with_items: "{{ prosody_ssl_pairs }}"
+  when: "prosody_ssl_pairs | length > 0"
+  notify: ["Restart prosody"]
+
+-
+  name: "Manage the SSL certificates"
+  become: true
+  no_log: true
+  copy:
+    content: |
+        {{ item.crt }}
+        {{ item.ca }}
+    dest: "{{ prosody_ssl_dir }}/{{ item.name }}.crt"
+    owner: "{{ prosody_user }}"
+    group: "{{ prosody_group }}"
+    mode: "0600"
+  with_items: "{{ prosody_ssl_pairs }}"
+  when: "prosody_ssl_pairs | length > 0"
+  notify: ["Restart prosody"]

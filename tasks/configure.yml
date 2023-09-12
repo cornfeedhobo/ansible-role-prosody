@@ -1,0 +1,14 @@
+---
+
+-
+  name: Manage prosody.cfg.lua
+  become: true
+  template:
+    src: "prosody.cfg.lua.j2"
+    dest: "{{ prosody_config_dir }}/prosody.cfg.lua"
+    owner: "root"
+    group: "{{ prosody_group }}"
+    mode: "0640"
+  notify:
+    - "Validate prosody config"
+    - "Restart prosody"
