@@ -1,13 +1,31 @@
 ---
-
 -
   name: "Validate prosody config"
+  when: "prosody_configure"
   become: true
-  command: "prosodyctl check config"
-
+  ansible.builtin.command: "prosodyctl --config {{ prosody_config_dir }}/ansible-managed.cfg.lua check config"
+  changed_when: false
+-
+  name: "Validate prosody certs"
+  when: "prosody_ssl"
+  become: true
+  ansible.builtin.command: "prosodyctl --config {{ prosody_config_dir }}/ansible-managed.cfg.lua check certs"
+  changed_when: false
+-
+  name: "Run daemon-reload"
+  when:
+    - "prosody_service"
+    - "prosody_service_state == 'started'"
+    - "ansible_service_mgr == 'systemd'"
+  become: true
+  ansible.builtin.systemd_service:
+    daemon_reload: true
 -
   name: "Restart prosody"
   become: true
-  service:
+  when:
+    - "prosody_service"
+    - "prosody_service_state == 'started'"
+  ansible.builtin.service:
     name: "prosody"
     state: "restarted"

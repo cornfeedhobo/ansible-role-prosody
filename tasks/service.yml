@@ -1,14 +1,33 @@
 ---
-
 -
-  name: "Manage prosody service"
+  name: "service | Create systemd override directory"
   become: true
-  service:
-    name: "prosody"
+  ansible.builtin.file:
+    state: "directory"
+    path: "/etc/systemd/system/prosody.service.d"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+-
+  name: "service | Write systemd override file"
+  become: true
+  ansible.builtin.template:
+    src: "service.conf.j2"
+    dest: "/etc/systemd/system/prosody.service.d/service.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify:
+    - "Run daemon-reload"
+    - "Restart prosody"
+-
+  name: "service | Manage prosody service"
+  become: true
+  ansible.builtin.service:
+    name: "{{ prosody_service_name }}"
     state: "{{ prosody_service_state }}"
     enabled: "{{ prosody_service_enabled }}"
-
 -
-  name: "Wait for prosody to start"
-  wait_for:
+  name: "service | Wait for prosody to start"
+  ansible.builtin.wait_for:
     port: 5222

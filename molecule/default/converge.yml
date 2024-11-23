@@ -7,3 +7,12 @@
         name: "cornfeedhobo.prosody"
       vars:
         prosody_install: true
+        prosody_configure: true
+        prosody_config:
+          modules_enabled:
+            - "tls"
+        prosody_vhosts:
+          example.org: |
+            Component "muc.example.org" "muc"
+              name = "example.org chatrooms"
+              modules_enabled = { "muc_mam", "vcard_muc" }

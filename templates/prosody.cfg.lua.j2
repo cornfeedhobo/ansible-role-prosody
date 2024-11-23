@@ -2,6 +2,10 @@
 --
 -- Prosody XMPP Configuration File
 
+{% if prosody_ssl -%}
+certificates = "{{ prosody_ssl_dir }}";
+{% endif %}
+
 {{ prosody_config | encode_lua(sort_keys=true) }}
 
 {% for vhost, cfg in prosody_vhosts.items() -%}

@@ -1,0 +1,7 @@
+---
+-
+  name: "install | Manage Prosody package(s)"
+  become: true
+  ansible.builtin.package:
+    name: "{{ prosody_packages | list }}"
+    state: "{{ prosody_package_state }}"

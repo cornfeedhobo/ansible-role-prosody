@@ -3,8 +3,13 @@
 
 - name: "Verify"
   hosts: "all"
-  gather_facts: false
   tasks:
+    -
+      name: "Include role variables"
+      ansible.builtin.include_vars: "{{ item }}"
+      with_items:
+        - "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/vars/{{ ansible_os_family }}.yml"
+        - "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/defaults/main.yml"
     -
       name: "Check if prosody was installed"
       ansible.builtin.package:
@@ -17,3 +22,13 @@
       ansible.builtin.assert:
         that:
           - "not prosody_stat.changed"
+    -
+      name: "Get the prosody ansible config status"
+      ansible.builtin.stat:
+        path: "{{ prosody_config_dir }}/ansible-managed.cfg.lua"
+      register: "_prosody_config"
+    -
+      name: "Assert that prosody is configured"
+      ansible.builtin.assert:
+        that:
+          - "_prosody_config.stat.exists is defined and _prosody_config.stat.exists"

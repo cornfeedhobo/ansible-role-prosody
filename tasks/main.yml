@@ -1,26 +1,25 @@
 ---
-
--
+- # This include ensures this role is only used against supported hosts
   name: "Include OS-specific variables"
-  include_vars: "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
   tags: ["prosody", "prosody-install", "prosody-ssl", "prosody-configure", "prosody-service"]
-
 -
-  include_tasks: "install-{{ ansible_os_family }}.yml"
+  name: "Include install.yml"
   when: "prosody_install"
+  ansible.builtin.import_tasks: "install.yml"
   tags: ["prosody", "prosody-install"]
-
 -
-  import_tasks: "ssl.yml"
+  name: "Include ssl.yml"
   when: "prosody_ssl"
+  ansible.builtin.import_tasks: "ssl.yml"
   tags: ["prosody", "prosody-ssl"]
-
 -
-  import_tasks: "configure.yml"
+  name: "Include configure.yml"
   when: "prosody_configure"
+  ansible.builtin.import_tasks: "configure.yml"
   tags: ["prosody", "prosody-configure"]
-
 -
-  import_tasks: "service.yml"
+  name: "Include service.yml"
   when: "prosody_service"
+  ansible.builtin.import_tasks: "service.yml"
   tags: ["prosody", "prosody-service"]

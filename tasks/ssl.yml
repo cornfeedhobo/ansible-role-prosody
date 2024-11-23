@@ -1,42 +1,41 @@
 ---
-
 -
-  name: "Ensure the SSL directory exists"
+  name: "ssl | Ensure the SSL directory exists"
+  when: "prosody_ssl_pairs | length > 0"
   become: true
-  file:
-    path: "{{ prosody_ssl_dir }}"
+  ansible.builtin.file:
     state: "directory"
-    owner: "{{ prosody_user }}"
+    path: "{{ prosody_ssl_dir }}"
+    owner: "{{ prosody_owner }}"
     group: "{{ prosody_group }}"
     mode: "0700"
-  when: "prosody_ssl_pairs | length > 0"
-
 -
-  name: "Manage the SSL keys"
+  name: "ssl | Manage the SSL keys"
+  when: "prosody_ssl_pairs | length > 0"
   become: true
   no_log: true
-  copy:
+  with_items: "{{ prosody_ssl_pairs }}"
+  ansible.builtin.copy:
     content: "{{ item.key }}"
     dest: "{{ prosody_ssl_dir }}/{{ item.name }}.key"
-    owner: "{{ prosody_user }}"
+    owner: "{{ prosody_owner }}"
     group: "{{ prosody_group }}"
     mode: "0600"
-  with_items: "{{ prosody_ssl_pairs }}"
-  when: "prosody_ssl_pairs | length > 0"
-  notify: ["Restart prosody"]
-
+  notify:
+    - "Validate prosody certs"
+    - "Restart prosody"
 -
-  name: "Manage the SSL certificates"
+  name: "ssl | Manage the SSL certificates"
+  when: "prosody_ssl_pairs | length > 0"
   become: true
   no_log: true
-  copy:
-    content: |
-        {{ item.crt }}
-        {{ item.ca }}
+  with_items: "{{ prosody_ssl_pairs }}"
+  ansible.builtin.copy:
+    content: "{{ item.crt }}"
     dest: "{{ prosody_ssl_dir }}/{{ item.name }}.crt"
-    owner: "{{ prosody_user }}"
+    owner: "{{ prosody_owner }}"
     group: "{{ prosody_group }}"
     mode: "0600"
-  with_items: "{{ prosody_ssl_pairs }}"
-  when: "prosody_ssl_pairs | length > 0"
-  notify: ["Restart prosody"]
+  notify:
+    - "Validate prosody certs"
+    - "Restart prosody"

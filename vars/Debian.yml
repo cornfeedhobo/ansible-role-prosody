@@ -2,9 +2,6 @@
 
 __prosody_packages:
   - "prosody"
-  - "lua-dbi"
-  - "lua-sec"
-
-__prosody_data_dir: "/usr/lib64/prosody"
+  - "prosody-modules"
 
 __prosody_config_dir: "/etc/prosody"

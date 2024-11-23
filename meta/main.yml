@@ -5,11 +5,50 @@ galaxy_info:
   description: "Install and configure Prosody XMPP Server."
   license: "MIT"
   galaxy_tags: ["prosody", "xmpp"]
-  min_ansible_version: "2.1"
+  min_ansible_version: "2.9"
   platforms:
+    -
+      name: "Debian"
+      versions:
+        - "jessie"
+        - "bullseye"
+        - "bookworm"
     -
       name: "EL"
       versions:
-        - "all"
+        - "7"
+        - "8"
+        - "9"
+    -
+      name: "Fedora"
+      versions:
+        - "32"
+        - "33"
+        - "34"
+        - "35"
+        - "36"
+        - "37"
+        - "38"
+        - "39"
+        - "40"
+        - "41"
+    -
+      name: "Ubuntu"
+      versions:
+        - "focal"
+        - "groovy"
+        - "hirsute"
+        - "impish"
+        - "jammy"
+        - "kinetic"
+        - "lunar"
+        - "mantic"
+        - "noble"
 
-dependencies: []
+dependencies:
+  -
+    role: "cornfeedhobo.epel"
+    tags: ["prosody", "prosody-install"]
+  -
+    role: "jtyr.config_encoder_filters"
+    tags: ["prosody", "prosody-configure"]

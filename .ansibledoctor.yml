@@ -1,2 +1,4 @@
-force_overwrite: True
-custom_header: .header
+---
+renderer:
+  force_overwrite: true
+  include_header: ".header"

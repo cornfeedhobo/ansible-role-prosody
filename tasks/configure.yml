@@ -1,14 +1,15 @@
 ---
-
 -
-  name: Manage prosody.cfg.lua
+  name: "configure | Manage prosody.cfg.lua"
   become: true
-  template:
+  ansible.builtin.template:
+    backup: true
     src: "prosody.cfg.lua.j2"
-    dest: "{{ prosody_config_dir }}/prosody.cfg.lua"
+    dest: "{{ prosody_config_dir }}/ansible-managed.cfg.lua"
     owner: "root"
     group: "{{ prosody_group }}"
     mode: "0640"
   notify:
     - "Validate prosody config"
+    - "Validate prosody certs"
     - "Restart prosody"

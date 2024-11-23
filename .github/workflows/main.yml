@@ -5,7 +5,7 @@ name: "Molecule"
 on:
   push:
     branches:
-      - "main"
+      - "*"
   pull_request:
     branches:
       - "main"
@@ -16,9 +16,24 @@ jobs:
     steps:
       -
         name: "Checkout ${{ github.repository }}"
-        uses: "actions/checkout@v3"
+        uses: "actions/checkout@v4"
       -
-        name: "Ansible Molecule"
-        uses: "gofrolist/molecule-action@v2"
+        name: "Set up Python"
+        uses: "actions/setup-python@v5"
         with:
-          molecule_args: "-d docker"
+          python-version-file: ".python-version"
+      -
+        name: "Install Pipenv"
+        run: "pip install --upgrade pipenv"
+      -
+        name: "Install dependencies"
+        run: "pipenv sync -d"
+      -
+        name: "Workaround community.docker issues"
+        run: "pipenv run ansible-galaxy collection install community.docker --force"
+      -
+        name: "Run tests"
+        run: "make all"
+      -
+        name: "Verify no changes"
+        run: "git --no-pager diff --exit-code"

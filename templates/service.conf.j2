@@ -1,0 +1,6 @@
+# {{ ansible_managed }}
+
+[Service]
+ExecStartPre={{ prosody_bin_path }} --config {{ prosody_config_dir }}/ansible-managed.cfg.lua check config
+ExecStart=
+ExecStart={{ prosody_bin_path }} -F --config {{ prosody_config_dir }}/ansible-managed.cfg.lua

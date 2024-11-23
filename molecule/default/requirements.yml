@@ -1,0 +1,8 @@
+---
+-
+  name: "cornfeedhobo.epel"
+-
+  name: "jtyr.config_encoder_filters"
+  scm: "git"
+  src: "https://github.com/jtyr/ansible-config_encoder_filters.git"
+  version: "6eac893c24a341f53df121e4139c5d96d31a5414"
